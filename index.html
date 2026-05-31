@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aastha Sharma — Creative Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Oswald:wght@700&family=Playfair+Display:wght@900&family=Righteous&family=Playpen+Sans:wght@400;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  /* =====================
+     SHUTTER INTRO
+  ===================== */
+  #shutter {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    pointer-events: none;
+  }
+
+  .shutter-panel {
+    flex: 1;
+    background: #1a1a1a;
+    transition: transform 0.9s cubic-bezier(0.77, 0, 0.18, 1);
+  }
+
+  .shutter-panel.left  { transform-origin: left; }
+  .shutter-panel.right { transform-origin: right; }
+
+  #shutter.open .shutter-panel.left  { transform: translateX(-100%); }
+  #shutter.open .shutter-panel.right { transform: translateX(100%); }
+
+  #shutter-text {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  #shutter-text.hide { opacity: 0; }
+
+  .shutter-name {
+    font-family: 'Playpen Sans', cursive;
+    font-weight: 800;
+    font-size: clamp(3rem, 10vw, 7rem);
+    color: #fff;
+    line-height: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .shutter-name .sn {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 6px;
+    transform: rotate(var(--rot, 0deg));
+  }
+
+  .shutter-sub {
+    font-family: 'Playpen Sans', cursive;
+    font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+    color: rgba(255,255,255,0.7);
+    margin-top: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .shutter-dot {
+    width: 8px; height: 8px;
+    background: #EC4899;
+    border-radius: 50%;
+    margin-top: 2rem;
+    animation: pulse 1s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%       { transform: scale(1.6); opacity: 0.5; }
+  }
+
+  /* =====================
+     MAIN STYLES
+  ===================== */
+  :root {
+    --pink: #F472B6;
+    --hot-pink: #EC4899;
+    --deep-pink: #DB2777;
+    --black: #1a1a1a;
+    --cream: #faf6f1;
+    --light-pink: #fce7f3;
+    --star-grey: #6b6b6b;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--black);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(250,246,241,0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--black);
+  }
+
+  .nav-logo {
+    font-family: 'Playpen Sans', cursive;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--black);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--hot-pink); }
+
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--black);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+    height: 2px; background: var(--hot-pink); transform: scaleX(0);
+    transition: transform 0.2s;
+  }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-links a:hover { color: var(--hot-pink); }
+
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px; cursor: pointer;
+    background: none; border: none; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 26px; height: 2.5px; background: var(--black);
+    border-radius: 2px; transition: 0.3s;
+  }
+
+  /* MOBILE NAV */
+  .mobile-menu {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--cream); z-index: 99;
+    flex-direction: column; justify-content: center; align-items: center; gap: 2rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'Playpen Sans', cursive; font-size: 2rem; font-weight: 700;
+    color: var(--black); text-decoration: none; transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--hot-pink); }
+  .close-btn {
+    position: absolute; top: 1.5rem; right: 2rem;
+    background: none; border: none; font-size: 2rem; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; padding: 6rem 2rem 2rem;
+    background: var(--cream);
+  }
+
+  .deco { position: absolute; pointer-events: none; }
+  .deco-star-tl { top: 4%; left: 2%; width: clamp(60px,8vw,110px); }
+  .deco-star-br { bottom: 4%; right: 2%; width: clamp(60px,8vw,110px); transform: rotate(45deg); }
+  .deco-loops-bl { bottom: 6%; left: 3%; width: clamp(60px,7vw,90px); opacity: 0.7; }
+  .deco-loops-tr { top: 10%; right: 4%; width: clamp(50px,6vw,80px); opacity: 0.7; }
+  .deco-tape { top: 5%; right: 8%; width: clamp(80px,10vw,140px); transform: rotate(-15deg); }
+  .deco-dots { opacity: 0.4; }
+
+  .hero-inner {
+    text-align: center; position: relative; z-index: 2;
+    max-width: 800px;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--cream);
+    border: 2.5px solid var(--black);
+    border-radius: 50px;
+    padding: 0.35rem 1.2rem;
+    font-family: 'Playpen Sans', cursive;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    transform: rotate(-2deg);
+  }
+
+  .hero-title {
+    font-family: 'Playpen Sans', cursive;
+    font-weight: 800;
+    font-size: clamp(3.5rem, 12vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: -2px;
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 4px;
+  }
+
+  .hero-title .chunk {
+    display: inline-block;
+    padding: 2px 8px;
+    transform: rotate(var(--rot, 0deg));
+    transition: transform 0.3s;
+  }
+  .hero-title .chunk:hover { transform: rotate(0deg) scale(1.05); }
+  .chunk-plain { color: var(--black); }
+  .chunk-pink { background: var(--hot-pink); color: var(--cream); border-radius: 4px; }
+  .chunk-outline { color: transparent; -webkit-text-stroke: 3px var(--black); }
+
+  .hero-name {
+    display: inline-block;
+    border: 2.5px solid var(--black);
+    border-radius: 50px;
+    padding: 0.3rem 1.4rem;
+    font-family: 'Playpen Sans', cursive;
+    font-size: clamp(1.1rem, 3vw, 1.8rem);
+    font-weight: 700;
+    margin-top: 0.8rem;
+    background: var(--cream);
+    transform: rotate(2deg);
+  }
+
+  .hero-sub {
+    font-size: clamp(0.85rem, 1.8vw, 1rem);
+    font-weight: 500;
+    margin-top: 1.5rem;
+    display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;
+    opacity: 0.75;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .hero-cta {
+    margin-top: 2rem;
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-block; padding: 0.75rem 1.8rem;
+    font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.95rem;
+    text-decoration: none; border: 2.5px solid var(--black);
+    border-radius: 50px; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .btn-primary { background: var(--hot-pink); color: #fff; }
+  .btn-primary:hover { background: var(--deep-pink); transform: translateY(-2px); box-shadow: 4px 4px 0 var(--black); }
+  .btn-outline { background: transparent; color: var(--black); }
+  .btn-outline:hover { background: var(--black); color: var(--cream); transform: translateY(-2px); }
+
+  /* SECTIONS */
+  section { padding: 5rem 1.5rem; position: relative; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+
+  .section-tag {
+    display: inline-block;
+    background: var(--hot-pink);
+    color: #fff;
+    font-family: 'Playpen Sans', cursive;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    padding: 0.3rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  /* ABOUT */
+  #about { background: #fff; }
+
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    align-items: center;
+  }
+
+  .about-photo-wrap { position: relative; }
+
+  .stamp-border {
+    display: inline-block;
+    background: var(--light-pink);
+    border: 3px solid var(--light-pink);
+    padding: 12px;
+    border-radius: 4px;
+    position: relative;
+    width: 100%;
+  }
+  .stamp-border::before {
+    content: '';
+    position: absolute; inset: 5px;
+    border: 2px dashed var(--hot-pink);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+  .stamp-border img {
+    width: 100%; display: block;
+    border-radius: 2px;
+    aspect-ratio: 4/5; object-fit: cover;
+  }
+
+  .stamp-label {
+    position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%) rotate(-2deg);
+    background: var(--black); color: #fff;
+    font-family: 'Playpen Sans', cursive; font-size: 1.1rem; font-weight: 700;
+    padding: 0.3rem 1.2rem; border-radius: 50px; white-space: nowrap;
+  }
+
+  .about-text h2 {
+    font-family: 'Playpen Sans', cursive; font-size: clamp(2rem,4vw,2.8rem);
+    font-weight: 800; line-height: 1.1; margin-bottom: 1rem;
+  }
+  .about-text p { font-size: 1.05rem; line-height: 1.7; color: #333; margin-bottom: 1rem; }
+
+  .quote-block {
+    border-left: 4px solid var(--hot-pink);
+    padding: 0.5rem 1rem;
+    font-family: 'Playpen Sans', cursive;
+    font-size: 1rem;
+    font-style: italic;
+    color: #555;
+    margin: 1.5rem 0;
+    background: var(--light-pink);
+    border-radius: 0 8px 8px 0;
+  }
+
+  .mediums-grid { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.2rem; }
+
+  .medium-chip {
+    background: var(--cream); border: 2px solid var(--black);
+    border-radius: 50px; padding: 0.3rem 0.9rem;
+    font-weight: 700; font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+  .medium-chip:hover { background: var(--hot-pink); color: #fff; border-color: var(--hot-pink); }
+
+  /* PHILOSOPHY */
+  #philosophy { background: var(--cream); }
+
+  .philosophy-title {
+    font-family: 'Playpen Sans', cursive; font-weight: 800;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1; margin-bottom: 3rem;
+  }
+  .philosophy-title .block-pink {
+    background: var(--hot-pink); color: #fff; display: inline-block;
+    padding: 0 0.3em; transform: rotate(-1deg); border-radius: 4px;
+  }
+
+  .philosophy-cards {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .phil-card {
+    background: #fff; border: 2.5px solid var(--black);
+    border-radius: 16px; padding: 1.8rem;
+    transition: transform 0.25s, box-shadow 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .phil-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    height: 5px; width: 100%; background: var(--hot-pink);
+  }
+  .phil-card:hover { transform: translateY(-6px) rotate(1deg); box-shadow: 6px 6px 0 var(--black); }
+
+  .phil-icon { font-size: 2rem; margin-bottom: 0.6rem; }
+  .phil-card h3 {
+    font-family: 'Playpen Sans', cursive; font-size: 1.1rem; font-weight: 700;
+    margin-bottom: 0.4rem; color: var(--hot-pink);
+  }
+  .phil-card p { font-size: 0.9rem; line-height: 1.6; color: #555; }
+
+  /* WORKSHOPS */
+  #workshops { background: #fff; }
+
+  .workshops-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;
+  }
+
+  .workshop-card {
+    border: 2.5px solid var(--black); border-radius: 16px;
+    overflow: hidden; margin-bottom: 1.5rem;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .workshop-card:hover { box-shadow: 5px 5px 0 var(--black); transform: translateY(-3px); }
+
+  .workshop-card-head {
+    background: var(--hot-pink); color: #fff;
+    font-family: 'Playpen Sans', cursive; font-weight: 700; font-size: 1.05rem;
+    padding: 0.6rem 1.2rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+
+  .workshop-card-body { padding: 1.2rem; }
+  .workshop-card-body ul { padding-left: 1.2rem; }
+  .workshop-card-body li { font-size: 0.9rem; color: #444; line-height: 1.8; }
+
+  .workshop-photos {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+
+  .photo-stamp {
+    background: var(--light-pink); padding: 8px;
+    border: 2px solid var(--light-pink); border-radius: 4px;
+    transform: rotate(var(--rot, 0deg));
+    transition: transform 0.3s;
+  }
+  .photo-stamp:hover { transform: rotate(0deg) scale(1.03); }
+  .photo-stamp img {
+    width: 100%; display: block; aspect-ratio: 4/3; object-fit: cover;
+    border-radius: 2px;
+  }
+
+  /* FORMATS */
+  #formats { background: var(--cream); }
+
+  .formats-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem; margin-top: 2rem;
+  }
+
+  .format-card {
+    background: #fff; border: 2.5px solid var(--black);
+    border-radius: 16px; padding: 1.5rem; text-align: center;
+    transition: all 0.25s;
+  }
+  .format-card:hover {
+    background: var(--hot-pink); color: #fff; transform: rotate(-2deg) scale(1.03);
+  }
+  .format-card:hover h3 { color: #fff; }
+  .format-card .icon { font-size: 2.2rem; margin-bottom: 0.5rem; }
+  .format-card h3 { font-family: 'Playpen Sans', cursive; font-weight: 700; font-size: 1rem; color: var(--black); }
+
+  /* PROCESS */
+  #process { background: #fff; }
+
+  .process-steps {
+    display: flex; flex-direction: column; gap: 1rem; max-width: 600px;
+  }
+
+  .step {
+    display: flex; align-items: center; gap: 1rem;
+    animation: slideIn 0.4s both;
+  }
+
+  .step-star { font-size: 1.8rem; flex-shrink: 0; }
+
+  .step-pill {
+    background: var(--light-pink); border: 2px solid var(--hot-pink);
+    border-radius: 50px; padding: 0.55rem 1.4rem;
+    font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1rem;
+    flex: 1; transition: all 0.2s;
+  }
+  .step-pill:hover { background: var(--hot-pink); color: #fff; border-color: var(--hot-pink); }
+
+  /* SERVICES */
+  #services { background: var(--cream); }
+
+  .services-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+
+  .services-list, .available-list { list-style: none; padding: 0; }
+  .services-list li, .available-list li {
+    display: flex; align-items: center; gap: 0.7rem;
+    padding: 0.7rem 0; border-bottom: 1px dashed #ddd;
+    font-size: 0.95rem; font-weight: 500;
+  }
+  .services-list li::before { content: '✦'; color: var(--hot-pink); font-size: 0.8rem; }
+  .available-list li::before { content: '◉'; color: var(--hot-pink); font-size: 0.7rem; }
+
+  .services-sub {
+    font-family: 'Playpen Sans', cursive; font-size: 1.1rem; font-weight: 700;
+    color: var(--hot-pink); margin-bottom: 0.8rem; margin-top: 1rem;
+  }
+
+  /* CONTACT */
+  #contact { background: var(--black); color: var(--cream); text-align: center; }
+
+  .contact-title {
+    font-family: 'Playpen Sans', cursive; font-weight: 800;
+    font-size: clamp(3rem, 10vw, 7rem); line-height: 0.9;
+    margin-bottom: 2.5rem;
+  }
+  .contact-title .word {
+    display: inline-block; margin: 0 4px;
+    padding: 2px 10px; border-radius: 6px;
+  }
+  .contact-title .w1 { background: var(--hot-pink); }
+  .contact-title .w2 { border: 3px solid var(--cream); }
+
+  .contact-cards {
+    display: flex; justify-content: center; gap: 1.5rem;
+    flex-wrap: wrap; margin-bottom: 2rem;
+  }
+
+  .contact-card {
+    background: var(--cream); color: var(--black);
+    border-radius: 16px; padding: 1.5rem 2rem; text-align: center;
+    min-width: 200px; transition: transform 0.2s;
+  }
+  .contact-card:hover { transform: translateY(-4px) rotate(2deg); }
+  .contact-card .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; margin-bottom: 0.3rem; }
+  .contact-card .value { font-weight: 700; font-size: 1rem; }
+  .contact-card a { color: var(--black); text-decoration: none; }
+  .contact-card a:hover { color: var(--hot-pink); }
+
+  .contact-location { opacity: 0.7; font-size: 0.9rem; margin-bottom: 1rem; }
+
+  /* ANIMATIONS */
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .hero-inner { animation: float 5s ease-in-out infinite; }
+  .hero-inner:hover { animation-play-state: paused; }
+
+  /* =====================
+     RESPONSIVE — TABLET (<=900px)
+  ===================== */
+  @media (max-width: 900px) {
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-photo-wrap { max-width: 300px; margin: 0 auto 1rem; }
+    .workshops-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .workshop-photos { order: -1; grid-template-columns: 1fr 1fr; }
+    .services-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .formats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* =====================
+     RESPONSIVE — MOBILE (<=768px)
+  ===================== */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    nav { padding: 0.9rem 1.2rem; }
+
+    #hero { padding: 5rem 1.2rem 2rem; min-height: 90vh; }
+    .hero-title { font-size: clamp(2.8rem, 14vw, 4.5rem); gap: 2px; }
+    .hero-badge { font-size: 1rem; }
+    .hero-name { font-size: 1.1rem; padding: 0.3rem 1rem; }
+    .hero-sub { font-size: 0.78rem; gap: 0.5rem; flex-direction: column; align-items: center; }
+    .hero-sub span:nth-child(2), .hero-sub span:nth-child(4) { display: none; }
+    .hero-cta { flex-direction: column; align-items: center; gap: 0.8rem; }
+    .btn { width: 100%; max-width: 280px; text-align: center; }
+    .deco-star-tl, .deco-star-br { width: 50px; }
+
+    section { padding: 3rem 1.1rem; }
+    .section-tag { font-size: 1.3rem; }
+
+    .about-photo-wrap { max-width: 250px; margin: 0 auto; }
+    .about-text h2 { font-size: 2rem; }
+    .medium-chip { font-size: 0.8rem; padding: 0.25rem 0.7rem; }
+
+    .philosophy-title { font-size: clamp(2rem, 8vw, 3rem); margin-bottom: 2rem; }
+    .philosophy-cards { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .phil-card { padding: 1.2rem; }
+
+    .workshop-photos { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+
+    .formats-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .format-card { padding: 1.1rem 0.8rem; }
+
+    .process-steps { max-width: 100%; }
+    .step-pill { font-size: 0.9rem; padding: 0.5rem 1rem; }
+
+    .contact-title { font-size: clamp(2.5rem, 12vw, 4rem); }
+    .contact-cards { flex-direction: column; align-items: center; gap: 1rem; }
+    .contact-card { width: 100%; max-width: 320px; }
+
+    .shutter-name { font-size: clamp(2rem, 10vw, 3.5rem); }
+  }
+
+  /* =====================
+     RESPONSIVE — SMALL MOBILE (<=420px)
+  ===================== */
+  @media (max-width: 420px) {
+    .hero-title { font-size: clamp(2.2rem, 16vw, 3rem); }
+    .deco-star-tl, .deco-star-br, .deco-loops-bl, .deco-loops-tr, .deco-tape { display: none; }
+
+    .philosophy-cards { grid-template-columns: 1fr; }
+
+    .gallery-grid { grid-template-columns: 1fr; max-width: 320px; margin-left: auto; margin-right: auto; }
+
+    .workshop-photos { grid-template-columns: 1fr; max-width: 280px; margin: 0 auto; }
+
+    .nav-logo { font-size: 1.1rem; }
+    section { padding: 2.5rem 1rem; }
+    .about-photo-wrap { max-width: 220px; }
+    .contact-card { max-width: 100%; }
+    .section-tag { font-size: 1.1rem; padding: 0.25rem 0.8rem; }
+
+    .hero-sub { display: none; }
+    .hero-cta { margin-top: 1.2rem; }
+  }
+
+  .about-bullets li {
+    font-size: 0.95rem; font-weight: 500; color: #444;
+    padding: 0.4rem 0; border-bottom: 1px dashed #e8d5e8;
+  }
+
+  /* GALLERY */
+  #gallery { background: var(--cream); }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.8rem;
+    margin-top: 2rem;
+  }
+
+  .gallery-item {
+    background: var(--light-pink);
+    border: 3px solid var(--light-pink);
+    padding: 14px 14px 10px; border-radius: 6px;
+    transform: rotate(var(--rot, 0deg));
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+  }
+  .gallery-item::before {
+    content: ''; position: absolute; inset: 5px;
+    border: 1.5px dashed var(--hot-pink); border-radius: 3px; pointer-events: none;
+  }
+  .gallery-item:hover {
+    transform: rotate(0deg) scale(1.04);
+    box-shadow: 6px 6px 0 var(--black); z-index: 2;
+  }
+  .gallery-item img {
+    width: 100%; display: block;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 2px;
+  }
+  .gallery-item .gallery-label {
+    text-align: center; font-family: 'Playpen Sans', cursive;
+    font-size: 0.78rem; font-weight: 700; margin-top: 8px; margin-bottom: 2px;
+    color: var(--black); opacity: 0.85;
+  }
+  .gallery-ig-note {
+    text-align: center; margin-top: 2rem;
+    font-family: 'Playpen Sans', cursive; font-size: 1.05rem; font-weight: 700;
+  }
+  .gallery-ig-note a { color: var(--hot-pink); text-decoration: none; border-bottom: 2px solid var(--hot-pink); }
+  .gallery-ig-note a:hover { color: var(--deep-pink); }
+
+  /* RANSOM-NOTE TITLE STYLES */
+  .ransom-title {
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    line-height: 1;
+  }
+
+  .rt-chunk {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: clamp(3.5rem, 12vw, 9rem);
+    font-weight: 900;
+    line-height: 1;
+    transform: rotate(var(--rot, 0deg));
+    transition: transform 0.3s;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.25);
+  }
+  .rt-chunk:hover { transform: rotate(0deg) scale(1.08); }
+
+  .ransom-contact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 0.2rem;
+  }
+
+  .rc {
+    display: inline-block;
+    font-size: clamp(2.8rem, 8vw, 6.5rem);
+    font-weight: 900;
+    line-height: 1;
+    padding: 4px 12px;
+    border-radius: 5px;
+    transform: rotate(var(--rot, 0deg));
+    transition: transform 0.25s;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+  }
+  .rc:hover { transform: rotate(0deg) scale(1.1); }
+
+  .rc-sm {
+    font-size: clamp(2.2rem, 6vw, 5rem);
+    padding: 4px 14px;
+  }
+
+  #contact .contact-title { margin-bottom: 2rem; }
+  #contact .rc { box-shadow: 3px 3px 0 rgba(255,255,255,0.2); }
+
+  @media (max-width: 768px) {
+    .rt-chunk { font-size: clamp(2.5rem, 13vw, 4rem); padding: 3px 7px; gap: 3px; }
+    .rc { font-size: clamp(2rem, 9vw, 3.5rem); padding: 3px 8px; }
+    .rc-sm { font-size: clamp(1.8rem, 7vw, 3rem); }
+    .ransom-contact { gap: 4px; }
+  }
+
+  @media (max-width: 420px) {
+    .rt-chunk { font-size: clamp(2rem, 14vw, 3rem); padding: 2px 5px; }
+    .rc { font-size: clamp(1.6rem, 10vw, 2.5rem); padding: 2px 6px; }
+  }
+
+  /* FLOATING STICKERS */
+  #gallery {
+    position: relative;
+    overflow: visible;
+    padding-left: 0; padding-right: 0;
+  }
+  #gallery .section-inner {
+    padding-left: 1.5rem; padding-right: 1.5rem;
+  }
+
+  .sticker {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    filter: drop-shadow(3px 6px 10px rgba(0,0,0,0.18));
+  }
+  .sticker img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+  }
+
+  .sticker-1 {
+    width: clamp(90px, 10vw, 145px);
+    top: 2%; left: -20px;
+    transform: rotate(-12deg);
+    animation: stickerFloat1 4s ease-in-out infinite;
+  }
+  .sticker-2 {
+    width: clamp(80px, 9vw, 130px);
+    bottom: 8%; left: -15px;
+    transform: rotate(8deg);
+    animation: stickerFloat2 5s ease-in-out infinite;
+  }
+  .sticker-3 {
+    width: clamp(85px, 9.5vw, 135px);
+    top: 4%; right: -15px;
+    transform: rotate(10deg);
+    animation: stickerFloat3 4.5s ease-in-out infinite;
+  }
+  .sticker-4 {
+    width: clamp(80px, 9vw, 128px);
+    bottom: 10%; right: -10px;
+    transform: rotate(-8deg);
+    animation: stickerFloat1 5.5s ease-in-out infinite reverse;
+  }
+
+  @keyframes stickerFloat1 {
+    0%, 100% { transform: rotate(-12deg) translateY(0px); }
+    50%       { transform: rotate(-12deg) translateY(-12px); }
+  }
+  @keyframes stickerFloat2 {
+    0%, 100% { transform: rotate(8deg) translateY(0px); }
+    50%       { transform: rotate(8deg) translateY(-10px); }
+  }
+  @keyframes stickerFloat3 {
+    0%, 100% { transform: rotate(10deg) translateY(0px); }
+    50%       { transform: rotate(10deg) translateY(-14px); }
+  }
+
+  @media (max-width: 900px) {
+    .sticker-1, .sticker-2, .sticker-3, .sticker-4 { width: clamp(60px, 7vw, 100px); }
+  }
+
+  @media (max-width: 768px) and (orientation: portrait) {
+    .sticker { display: none; }
+    #gallery .section-inner { padding-left: 1.1rem; padding-right: 1.1rem; }
+  }
+
+  @media (max-width: 900px) and (orientation: landscape) {
+    .sticker { width: clamp(55px, 6vw, 85px); }
+    .sticker-1 { left: 2px; top: 4%; }
+    .sticker-2 { left: 2px; bottom: 6%; }
+    .sticker-3 { right: 2px; top: 4%; }
+    .sticker-4 { right: 2px; bottom: 6%; }
+    #gallery .section-inner { padding-left: 6rem; padding-right: 6rem; }
+  }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1; transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== SHUTTER INTRO ===================== -->
+<div id="shutter">
+  <div class="shutter-panel left"></div>
+  <div class="shutter-panel right"></div>
+</div>
+
+<div id="shutter-text">
+  <div class="shutter-name">
+    <span class="sn" style="--rot:-3deg; background:#EC4899; color:#fff; font-family:'Abril Fatface',serif;">A</span>
+    <span class="sn" style="--rot:2deg; background:#fff; color:#1a1a1a; font-family:'Playfair Display',serif;">a</span>
+    <span class="sn" style="--rot:-2deg; background:#1a1a1a; color:#EC4899; font-family:'Righteous',cursive;">s</span>
+    <span class="sn" style="--rot:3deg; background:#fce7f3; color:#1a1a1a; font-family:'Oswald',sans-serif; border:3px solid #EC4899;">t</span>
+    <span class="sn" style="--rot:-1deg; background:#EC4899; color:#fff; font-family:'Abril Fatface',serif;">h</span>
+    <span class="sn" style="--rot:2deg; background:#1a1a1a; color:#fff; font-family:'Playfair Display',serif;">a</span>
+  </div>
+  <div class="shutter-sub">Artist &nbsp;✦&nbsp; Creative Workshops</div>
+  <div class="shutter-dot"></div>
+</div>
+<!-- ========================================================= -->
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Aastha <span>✦</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#workshops">Workshops</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-btn" id="closeMenu">✕</button>
+  <a href="#about" class="mm-link">About</a>
+  <a href="#philosophy" class="mm-link">Philosophy</a>
+  <a href="#workshops" class="mm-link">Workshops</a>
+  <a href="#gallery" class="mm-link">Gallery</a>
+  <a href="#process" class="mm-link">Process</a>
+  <a href="#contact" class="mm-link">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <svg class="deco deco-star-tl" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 0 L55 40 L95 30 L60 55 L80 90 L50 65 L20 90 L40 55 L5 30 L45 40Z" fill="#1a1a1a"/>
+  </svg>
+  <svg class="deco deco-star-br" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 0 L55 40 L95 30 L60 55 L80 90 L50 65 L20 90 L40 55 L5 30 L45 40Z" fill="#1a1a1a"/>
+  </svg>
+  <svg class="deco deco-loops-bl" viewBox="0 0 90 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="15" cy="60" rx="13" ry="55" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+    <ellipse cx="35" cy="60" rx="13" ry="55" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+    <ellipse cx="55" cy="60" rx="13" ry="55" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+    <ellipse cx="75" cy="60" rx="13" ry="55" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+  </svg>
+  <svg class="deco deco-loops-tr" viewBox="0 0 90 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="15" cy="60" rx="13" ry="55" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+    <ellipse cx="35" cy="60" rx="13" ry="55" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+    <ellipse cx="55" cy="60" rx="13" ry="55" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+    <ellipse cx="75" cy="60" rx="13" ry="55" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+  </svg>
+
+  <div class="hero-inner">
+    <div class="hero-badge">✦ Creative</div>
+    <div class="hero-title ransom-title">
+      <span class="rt-chunk" style="--rot:-4deg; background:#1a1a1a; color:#fff; font-family:'Abril Fatface',serif;">P</span>
+      <span class="rt-chunk" style="--rot:5deg; background:var(--hot-pink); color:#fff; font-family:'Righteous',cursive;">or</span>
+      <span class="rt-chunk" style="--rot:-2deg; background:var(--cream); color:transparent; -webkit-text-stroke:3px #1a1a1a; font-family:'Playfair Display',serif;">t</span>
+      <span class="rt-chunk" style="--rot:3deg; background:var(--hot-pink); color:#fff; font-family:'Oswald',sans-serif; text-transform:uppercase;">fo</span>
+      <span class="rt-chunk" style="--rot:-5deg; background:#1a1a1a; color:var(--hot-pink); font-family:'Abril Fatface',serif;">l</span>
+      <span class="rt-chunk" style="--rot:4deg; background:var(--light-pink); color:#1a1a1a; font-family:'Playfair Display',serif; border:3px solid #1a1a1a;">io</span>
+    </div>
+    <div class="hero-name">Aastha Sharma ✦</div>
+    <div class="hero-sub">
+      <span>Artist</span>
+      <span>·</span>
+      <span>Creative Workshops</span>
+      <span>·</span>
+      <span>Handmade Art</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#workshops" class="btn btn-primary">See Workshops</a>
+      <a href="#contact" class="btn btn-outline">Work With Me</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-photo-wrap reveal">
+        <div class="stamp-border">
+          <img src="C:\Users\naman\OneDrive\Desktop\Aastha Sharma Portfolio\aastha.PNG" alt="Aastha Sharma"/>
+          <div class="stamp-label">Aastha ✦</div>
+        </div>
+      </div>
+      <div class="about-text reveal">
+        <div class="section-tag">Introduction</div>
+        <h2>Hi, I'm<br>Aastha 👋</h2>
+        <p>An artist and craft enthusiast passionate about creating meaningful, hands-on creative experiences.</p>
+        <p>I work across a variety of mediums including pipe cleaner crafts, crochet, embroidery, clay modelling, sketching, and painting. Through community workshops, I've discovered how rewarding it is to help people learn new skills, express themselves creatively, and connect with others.</p>
+        <div class="quote-block">
+          "Art doesn't have to be perfect, it just has to be yours."
+        </div>
+        <p><strong>Creative Mediums:</strong></p>
+        <div class="mediums-grid">
+          <span class="medium-chip">🧶 Crochet</span>
+          <span class="medium-chip">🌸 Pipe Cleaner Crafts</span>
+          <span class="medium-chip">🎨 Acrylic Painting</span>
+          <span class="medium-chip">🏺 Clay Modelling</span>
+          <span class="medium-chip">🪡 Embroidery</span>
+          <span class="medium-chip">💧 Water Colors</span>
+          <span class="medium-chip">✏️ Sketching</span>
+        </div>
+        <div style="margin-top:1.8rem;">
+          <p><strong>Workshop Focus:</strong></p>
+          <div class="mediums-grid" style="margin-top:0.6rem;">
+            <span class="medium-chip">🙌 Hands-on learning</span>
+            <span class="medium-chip">🤝 Community building</span>
+            <span class="medium-chip">🌱 Beginner-friendly activities</span>
+            <span class="medium-chip">🎨 Creative expression</span>
+          </div>
+        </div>
+        <ul class="about-bullets" style="margin-top:1.5rem; padding-left:0; list-style:none;">
+          <li>📍 Artist and craft enthusiast based in Delhi</li>
+          <li>✦ Experience facilitating community-based workshops</li>
+          <li>💡 Passionate about creating beginner-friendly creative experiences</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section id="philosophy">
+  <div class="section-inner">
+    <div class="philosophy-title reveal">
+      My <span class="block-pink">Work</span><br>Philosophy
+    </div>
+    <div class="philosophy-cards">
+      <div class="phil-card reveal">
+        <div class="phil-icon">🌟</div>
+        <h3>Creativity for Everyone</h3>
+        <p>Art should feel accessible regardless of experience. There's no wrong way to create.</p>
+      </div>
+      <div class="phil-card reveal">
+        <div class="phil-icon">🤝</div>
+        <h3>Community First</h3>
+        <p>Workshops are a space to connect and create together — the community is the magic.</p>
+      </div>
+      <div class="phil-card reveal">
+        <div class="phil-icon">🙌</div>
+        <h3>Learn by Doing</h3>
+        <p>The best way to learn is through hands-on exploration. Jump in and see what happens.</p>
+      </div>
+      <div class="phil-card reveal">
+        <div class="phil-icon">💫</div>
+        <h3>Process Over Perfection</h3>
+        <p>The joy of creating matters more than the final result. Embrace the mess!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKSHOPS -->
+<section id="workshops">
+  <div class="section-inner">
+    <div class="section-tag reveal">Featured Workshops</div>
+    <div class="workshops-layout">
+      <div>
+        <div class="workshop-card reveal">
+          <div class="workshop-card-head"><span>🌸</span> 1. Pipe Cleaner Craft</div>
+          <div class="workshop-card-body">
+            <ul>
+              <li>Handmade lilies and sunflowers</li>
+              <li>Beginner friendly</li>
+              <li>1.5–2 hour session</li>
+            </ul>
+          </div>
+        </div>
+        <div class="workshop-card reveal">
+          <div class="workshop-card-head"><span>🧶</span> 2. Crochet Workshop</div>
+          <div class="workshop-card-body">
+            <ul>
+              <li>Basic stitches taught step by step</li>
+              <li>Small project completion</li>
+              <li>Take-home creation</li>
+            </ul>
+          </div>
+        </div>
+        <div class="workshop-card reveal">
+          <div class="workshop-card-head"><span>🪡</span> 3. Embroidery Workshop</div>
+          <div class="workshop-card-body">
+            <ul>
+              <li>Classic embroidery techniques</li>
+              <li>Beginner to intermediate</li>
+              <li>Create your own hoop art</li>
+            </ul>
+          </div>
+        </div>
+        <div class="workshop-card reveal">
+          <div class="workshop-card-head"><span>🏺</span> 4. Clay Modelling Session</div>
+          <div class="workshop-card-body">
+            <ul>
+              <li>Air-dry & polymer clay</li>
+              <li>Build miniatures & jewelry</li>
+              <li>2 hour hands-on session</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="workshop-photos reveal">
+        <div class="photo-stamp" style="--rot:-3deg">
+          <img src="C:\Users\naman\OneDrive\Desktop\Aastha Sharma Portfolio\workshop.PNG" alt="Workshop photo"/>
+        </div>
+        <div class="photo-stamp" style="--rot:3deg; margin-top: 1.5rem;">
+          <img src="flower.jpeg" alt="Group photo"/>
+        </div>
+        <div class="photo-stamp" style="--rot:-2deg">
+          <img src="flower1.jpeg" alt="Craft photo"/>
+        </div>
+        <div class="photo-stamp" style="--rot:4deg; margin-top: 1.5rem;">
+          <img src="C:\Users\naman\OneDrive\Desktop\Aastha Sharma Portfolio\group.PNG" alt="Art photo"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="sticker sticker-1" aria-hidden="true"><img src="IMG_7713.PNG" alt=""/></div>
+  <div class="sticker sticker-2" aria-hidden="true"><img src="IMG_7713 (5).PNG" alt=""/></div>
+  <div class="sticker sticker-3" aria-hidden="true"><img src="IMG_7713 (4).PNG" alt=""/></div>
+  <div class="sticker sticker-4" aria-hidden="true"><img src="IMG_7713 (1).PNG" alt=""/></div>
+
+  <div class="section-inner" style="position:relative; z-index:2;">
+    <div class="ransom-title reveal" style="margin-bottom:1rem; justify-content:flex-start; gap:5px;">
+      <span class="rt-chunk" style="--rot:-4deg; background:var(--hot-pink); color:#fff; font-family:'Abril Fatface',serif; font-size:clamp(3rem,10vw,7rem);">G</span>
+      <span class="rt-chunk" style="--rot:3deg; background:#1a1a1a; color:#fff; font-family:'Playfair Display',serif; font-size:clamp(3rem,10vw,7rem);">a</span>
+      <span class="rt-chunk" style="--rot:-2deg; background:var(--cream); color:transparent; -webkit-text-stroke:3px var(--hot-pink); font-family:'Righteous',cursive; font-size:clamp(3rem,10vw,7rem); border:3px solid var(--hot-pink);">ll</span>
+      <span class="rt-chunk" style="--rot:4deg; background:var(--hot-pink); color:#fff; font-family:'Oswald',sans-serif; text-transform:uppercase; font-size:clamp(3rem,10vw,7rem);">e</span>
+      <span class="rt-chunk" style="--rot:-3deg; background:#1a1a1a; color:var(--hot-pink); font-family:'Abril Fatface',serif; font-size:clamp(3rem,10vw,7rem);">ry</span>
+    </div>
+    <p class="reveal" style="color:#555; margin-bottom:0.5rem;">A peek into Aastha's handmade creations ✦</p>
+    <div class="gallery-grid">
+      <div class="gallery-item reveal" style="--rot:-2deg">
+        <img src="IMG_7713.PNG" alt="Pipe cleaner flower bouquet"/>
+        <div class="gallery-label">Pipe Cleaner Bouquet</div>
+      </div>
+      <div class="gallery-item reveal" style="--rot:3deg">
+        <img src="IMG_7713 (1).PNG" alt="Crochet Spiderman"/>
+        <div class="gallery-label">Crochet Spiderman</div>
+      </div>
+      <div class="gallery-item reveal" style="--rot:-1deg">
+        <img src="IMG_7713 (2).PNG" alt="Acrylic painting peacock"/>
+        <div class="gallery-label">Acrylic Painting — Peacock</div>
+      </div>
+      <div class="gallery-item reveal" style="--rot:2deg">
+        <img src="IMG_7713 (3).PNG" alt="Dog portrait painting"/>
+        <div class="gallery-label">Dog Portrait</div>
+      </div>
+      <div class="gallery-item reveal" style="--rot:-3deg">
+        <img src="IMG_7713 (4).PNG" alt="Crochet Pikachu"/>
+        <div class="gallery-label">Crochet Pikachu</div>
+      </div>
+      <div class="gallery-item reveal" style="--rot:1deg">
+        <img src="IMG_7713 (5).PNG" alt="Crochet Deadpool"/>
+        <div class="gallery-label">Crochet Deadpool</div>
+      </div>
+    </div>
+    <p class="gallery-ig-note reveal">
+      For more, checkout <a href="https://instagram.com/Tim.bells" target="_blank">@Tim.bells on IG</a> ✦
+    </p>
+  </div>
+</section>
+
+<!-- FORMATS -->
+<section id="formats">
+  <div class="section-inner">
+    <div class="section-tag reveal">Workshop Formats</div>
+    <div class="formats-grid">
+      <div class="format-card reveal"><div class="icon">☕</div><h3>Café Workshops</h3></div>
+      <div class="format-card reveal"><div class="icon">🏘️</div><h3>Community Events</h3></div>
+      <div class="format-card reveal"><div class="icon">👥</div><h3>Private Groups</h3></div>
+      <div class="format-card reveal"><div class="icon">🎓</div><h3>College Events</h3></div>
+    </div>
+    <div style="margin-top:2.5rem;" class="reveal">
+      <p style="font-weight:700; margin-bottom:1rem; font-size:1.1rem;">Suitable For:</p>
+      <div class="mediums-grid">
+        <span class="medium-chip">🌱 Beginners</span>
+        <span class="medium-chip">📚 Students</span>
+        <span class="medium-chip">💼 Working Professionals</span>
+        <span class="medium-chip">🎨 Hobby Enthusiasts</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-inner">
+    <div class="section-tag reveal">Creative Process</div>
+    <div class="process-steps">
+      <div class="step reveal"><span class="step-star">⭐</span><div class="step-pill">Concept Development</div></div>
+      <div class="step reveal"><span class="step-star">⭐</span><div class="step-pill">Material Preparation</div></div>
+      <div class="step reveal"><span class="step-star">⭐</span><div class="step-pill">Venue Coordination</div></div>
+      <div class="step reveal"><span class="step-star">⭐</span><div class="step-pill">Workshop Facilitation</div></div>
+      <div class="step reveal"><span class="step-star">⭐</span><div class="step-pill">Feedback and Follow-up</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <div class="section-tag reveal">Together</div>
+    <div class="services-layout reveal">
+      <div>
+        <p class="services-sub">Services Offered:</p>
+        <ul class="services-list">
+          <li>Pipe Cleaner Flower Workshops</li>
+          <li>Crochet Workshops</li>
+          <li>Embroidery Workshops</li>
+          <li>Clay Modelling Sessions</li>
+          <li>Painting Workshops</li>
+          <li>Custom Creative Events</li>
+        </ul>
+      </div>
+      <div>
+        <p class="services-sub">Available For:</p>
+        <ul class="available-list">
+          <li>Cafés</li>
+          <li>Community Spaces</li>
+          <li>College Events</li>
+          <li>Pop-Up Creative Events</li>
+        </ul>
+        <div style="margin-top:2rem;">
+          <a href="#contact" class="btn btn-primary">Book a Workshop →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-title reveal">
+      <div class="ransom-contact">
+        <span class="rc" style="--rot:-5deg; background:var(--hot-pink); color:#fff; font-family:'Abril Fatface',serif;">C</span>
+        <span class="rc" style="--rot:4deg; background:#fff; color:#1a1a1a; font-family:'Playfair Display',serif; border:3px solid #1a1a1a;">o</span>
+        <span class="rc" style="--rot:-3deg; background:#1a1a1a; color:#fff; font-family:'Righteous',cursive;">n</span>
+        <span class="rc" style="--rot:5deg; background:var(--light-pink); color:#1a1a1a; font-family:'Oswald',sans-serif; border:3px solid var(--hot-pink);">t</span>
+        <span class="rc" style="--rot:-4deg; background:var(--hot-pink); color:#fff; font-family:'Abril Fatface',serif;">a</span>
+        <span class="rc" style="--rot:3deg; background:#1a1a1a; color:var(--hot-pink); font-family:'Playfair Display',serif;">c</span>
+        <span class="rc" style="--rot:-2deg; background:#fff; color:#1a1a1a; font-family:'Righteous',cursive; border:3px solid #1a1a1a;">t</span>
+      </div>
+      <div class="ransom-contact" style="margin-top:0.3rem;">
+        <span class="rc rc-sm" style="--rot:4deg; background:var(--hot-pink); color:#fff; font-family:'Oswald',sans-serif;">M</span>
+        <span class="rc rc-sm" style="--rot:-3deg; background:#1a1a1a; color:#fff; font-family:'Abril Fatface',serif; border:3px solid var(--hot-pink);">e</span>
+      </div>
+    </div>
+    <div class="contact-cards">
+      <div class="contact-card reveal">
+        <div class="label">Email</div>
+        <div class="value"><a href="mailto:tim.bells15@gmail.com">tim.bells15@gmail.com</a></div>
+      </div>
+      <div class="contact-card reveal">
+        <div class="label">Phone</div>
+        <div class="value"><a href="tel:+919870556951">+91 9870556951</a></div>
+      </div>
+      <div class="contact-card reveal">
+        <div class="label">Instagram</div>
+        <div class="value"><a href="https://instagram.com/Tim.bells" target="_blank">@Tim.bells</a></div>
+      </div>
+    </div>
+    <p class="contact-location reveal">📍 Delhi — Available for café collaborations, community events, pop-ups, and private workshops.</p>
+    <p style="opacity:0.4; font-size:0.8rem; margin-top:2rem;">© 2025 Aastha Sharma. Made with ♥</p>
+  </div>
+</section>
+
+<script>
+  // ===================== SHUTTER INTRO =====================
+  window.addEventListener('load', function () {
+    const shutter = document.getElementById('shutter');
+    const shutterText = document.getElementById('shutter-text');
+
+    // Step 1: after 1.4s, fade out the text
+    setTimeout(function () {
+      shutterText.classList.add('hide');
+    }, 1400);
+
+    // Step 2: after 1.8s, slide panels open
+    setTimeout(function () {
+      shutter.classList.add('open');
+    }, 1800);
+
+    // Step 3: after panels finish sliding (1.8 + 900ms), remove from DOM
+    setTimeout(function () {
+      shutter.remove();
+      shutterText.remove();
+    }, 2800);
+  });
+  // =========================================================
+
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const closeMenu = document.getElementById('closeMenu');
+
+  hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
+  closeMenu.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  document.querySelectorAll('.mm-link').forEach(link => {
+    link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
