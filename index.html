@@ -920,7 +920,7 @@
     <div class="about-grid">
       <div class="about-photo-wrap reveal">
         <div class="stamp-border">
-          <img src="C:\Users\naman\OneDrive\Desktop\Aastha Sharma Portfolio\aastha.PNG" alt="Aastha Sharma"/>
+          <img src="images/aastha.PNG" alt="Aastha Sharma"/>
           <div class="stamp-label">Aastha ✦</div>
         </div>
       </div>
@@ -1041,16 +1041,16 @@
       </div>
       <div class="workshop-photos reveal">
         <div class="photo-stamp" style="--rot:-3deg">
-          <img src="C:\Users\naman\OneDrive\Desktop\Aastha Sharma Portfolio\workshop.PNG" alt="Workshop photo"/>
+          <img src="images/workshop.PNG" alt="Workshop photo"/>
         </div>
         <div class="photo-stamp" style="--rot:3deg; margin-top: 1.5rem;">
-          <img src="flower.jpeg" alt="Group photo"/>
+          <img src="images/flower.jpeg" alt="Group photo"/>
         </div>
         <div class="photo-stamp" style="--rot:-2deg">
-          <img src="flower1.jpeg" alt="Craft photo"/>
+          <img src="images/flower1.jpeg" alt="Craft photo"/>
         </div>
         <div class="photo-stamp" style="--rot:4deg; margin-top: 1.5rem;">
-          <img src="C:\Users\naman\OneDrive\Desktop\Aastha Sharma Portfolio\group.PNG" alt="Art photo"/>
+          <img src="images/group.PNG" alt="Art photo"/>
         </div>
       </div>
     </div>
@@ -1059,10 +1059,10 @@
 
 <!-- GALLERY -->
 <section id="gallery">
-  <div class="sticker sticker-1" aria-hidden="true"><img src="IMG_7713.PNG" alt=""/></div>
-  <div class="sticker sticker-2" aria-hidden="true"><img src="IMG_7713 (5).PNG" alt=""/></div>
-  <div class="sticker sticker-3" aria-hidden="true"><img src="IMG_7713 (4).PNG" alt=""/></div>
-  <div class="sticker sticker-4" aria-hidden="true"><img src="IMG_7713 (1).PNG" alt=""/></div>
+  <div class="sticker sticker-1" aria-hidden="true"><img src="images/IMG_7713.PNG" alt=""/></div>
+  <div class="sticker sticker-2" aria-hidden="true"><img src="images/IMG_7713 (5).PNG" alt=""/></div>
+  <div class="sticker sticker-3" aria-hidden="true"><img src="images/IMG_7713 (4).PNG" alt=""/></div>
+  <div class="sticker sticker-4" aria-hidden="true"><img src="images/IMG_7713 (1).PNG" alt=""/></div>
 
   <div class="section-inner" style="position:relative; z-index:2;">
     <div class="ransom-title reveal" style="margin-bottom:1rem; justify-content:flex-start; gap:5px;">
@@ -1075,27 +1075,27 @@
     <p class="reveal" style="color:#555; margin-bottom:0.5rem;">A peek into Aastha's handmade creations ✦</p>
     <div class="gallery-grid">
       <div class="gallery-item reveal" style="--rot:-2deg">
-        <img src="IMG_7713.PNG" alt="Pipe cleaner flower bouquet"/>
+        <img src="images/IMG_7713.PNG" alt="Pipe cleaner flower bouquet"/>
         <div class="gallery-label">Pipe Cleaner Bouquet</div>
       </div>
       <div class="gallery-item reveal" style="--rot:3deg">
-        <img src="IMG_7713 (1).PNG" alt="Crochet Spiderman"/>
+        <img src="images/IMG_7713 (1).PNG" alt="Crochet Spiderman"/>
         <div class="gallery-label">Crochet Spiderman</div>
       </div>
       <div class="gallery-item reveal" style="--rot:-1deg">
-        <img src="IMG_7713 (2).PNG" alt="Acrylic painting peacock"/>
+        <img src="images/IMG_7713 (2).PNG" alt="Acrylic painting peacock"/>
         <div class="gallery-label">Acrylic Painting — Peacock</div>
       </div>
       <div class="gallery-item reveal" style="--rot:2deg">
-        <img src="IMG_7713 (3).PNG" alt="Dog portrait painting"/>
+        <img src="images/IMG_7713 (3).PNG" alt="Dog portrait painting"/>
         <div class="gallery-label">Dog Portrait</div>
       </div>
       <div class="gallery-item reveal" style="--rot:-3deg">
-        <img src="IMG_7713 (4).PNG" alt="Crochet Pikachu"/>
+        <img src="images/IMG_7713 (4).PNG" alt="Crochet Pikachu"/>
         <div class="gallery-label">Crochet Pikachu</div>
       </div>
       <div class="gallery-item reveal" style="--rot:1deg">
-        <img src="IMG_7713 (5).PNG" alt="Crochet Deadpool"/>
+        <img src="images/IMG_7713 (5).PNG" alt="Crochet Deadpool"/>
         <div class="gallery-label">Crochet Deadpool</div>
       </div>
     </div>
@@ -1216,17 +1216,14 @@
     const shutter = document.getElementById('shutter');
     const shutterText = document.getElementById('shutter-text');
 
-    // Step 1: after 1.4s, fade out the text
     setTimeout(function () {
       shutterText.classList.add('hide');
     }, 1400);
 
-    // Step 2: after 1.8s, slide panels open
     setTimeout(function () {
       shutter.classList.add('open');
     }, 1800);
 
-    // Step 3: after panels finish sliding (1.8 + 900ms), remove from DOM
     setTimeout(function () {
       shutter.remove();
       shutterText.remove();
